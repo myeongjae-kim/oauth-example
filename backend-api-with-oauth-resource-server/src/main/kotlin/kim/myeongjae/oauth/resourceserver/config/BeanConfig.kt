@@ -28,7 +28,9 @@ class BeanConfig(
         val jwtDecoder = JwtDecoders.fromIssuerLocation<JwtDecoder>(issuerUri) as NimbusJwtDecoder
         val audienceValidator = audienceValidator(oAuth2ResourceServerProperties.jwt.audiences)
         val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(
-            JwtTimestampValidator(Duration.of(1, ChronoUnit.DAYS)), // 구글의 jwt expire time은 1시간이지만, 하루동안 접속이 유지되도록 하기 위해 clockSkew를 하루로 설정함.
+            // 구글의 jwt expire time은 1시간이지만, 하루동안 접속이 유지되도록 하기 위해 clockSkew를 하루로 설정함.
+            // 백엔드에서 Session을 사용해서 인증정보를 저장한다면 이 옵션이 필요없다.
+            JwtTimestampValidator(Duration.of(1, ChronoUnit.DAYS)),
             JwtIssuerValidator(issuerUri),
             audienceValidator,
         )

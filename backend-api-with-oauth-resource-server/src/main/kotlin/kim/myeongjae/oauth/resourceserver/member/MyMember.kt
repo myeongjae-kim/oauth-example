@@ -16,7 +16,7 @@ class MyMember(
     }
 
     override fun <A> getAttribute(name: String): A? {
-        return super<OAuth2User>.getAttribute<A>(name)
+        return super.getAttribute<A>(name)
     }
 
     override fun getAttributes(): MutableMap<String, Any>? {
