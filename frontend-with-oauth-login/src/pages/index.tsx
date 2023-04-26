@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -8,13 +8,15 @@ const inter = Inter({ subsets: ['latin'] });
 const useProfileFromBackend = (token?: string): object | undefined => {
   const [profile, setProfile] = useState<object>();
 
-  if (token) {
-    axios
-      .get('http://localhost:8080/profile', { headers: { Authorization: 'Bearer ' + token } })
-      .then((response) => {
-        setProfile(response.data);
-      });
-  }
+  useEffect(() => {
+    if (token) {
+      axios
+        .get('http://localhost:8080/profile', { headers: { Authorization: 'Bearer ' + token } })
+        .then((response) => {
+          setProfile(response.data);
+        });
+    }
+  }, [token]);
 
   return profile;
 };

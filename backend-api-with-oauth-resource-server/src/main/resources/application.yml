@@ -1,0 +1,7 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          audiences: 456032865148-5siju890rqfsjs2hph4bs9lcis1e5ak7.apps.googleusercontent.com # client-id
