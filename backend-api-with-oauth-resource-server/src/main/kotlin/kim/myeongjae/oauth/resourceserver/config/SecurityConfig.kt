@@ -10,29 +10,24 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfiguration.ALL
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig() {
 
     @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("http://localhost:3000")
-        configuration.allowedMethods = listOf(ALL)
-        configuration.allowedHeaders = listOf(ALL)
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", configuration)
-        return source
-    }
-
-    @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.httpBasic().disable()
             .csrf().disable()
-            .cors(withDefaults())
+            .cors { corsConfigurer ->
+                corsConfigurer.configurationSource {
+                    CorsConfiguration().apply {
+                        allowedOrigins = listOf("http://localhost:3000")
+                        allowedMethods = listOf(ALL)
+                        allowedHeaders = listOf(ALL)
+                    }
+                }
+            }
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests { authorize ->
