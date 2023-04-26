@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ResourceserverApplication
+class ResourceServerApplication
 
 fun main(args: Array<String>) {
-	runApplication<ResourceserverApplication>(*args)
+    runApplication<ResourceServerApplication>(*args)
 }
