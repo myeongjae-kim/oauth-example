@@ -27,7 +27,10 @@ class ProfileControllerIntTest {
             .andExpect {
                 status { isOk() }
                 content { contentType("application/json") }
-                jsonPath("$.claims.iss") { value(oAuth2ResourceServerProperties.jwt.issuerUri) }
+                jsonPath("$.id") { isString() }
+                jsonPath("$.email") { isString() }
+                jsonPath("$.name") { isString() }
+                jsonPath("$.picture") { isString() }
             }
     }
 }

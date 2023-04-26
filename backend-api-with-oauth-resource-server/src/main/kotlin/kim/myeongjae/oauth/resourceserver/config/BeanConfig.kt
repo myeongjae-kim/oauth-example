@@ -7,6 +7,8 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames.AUD
 import org.springframework.security.oauth2.core.OAuth2TokenValidator
 import org.springframework.security.oauth2.jwt.*
+import java.time.Duration
+import java.time.temporal.ChronoUnit
 
 @Configuration
 class BeanConfig(
@@ -19,8 +21,11 @@ class BeanConfig(
         val issuerUri = oAuth2ResourceServerProperties.jwt.issuerUri
         val jwtDecoder = JwtDecoders.fromIssuerLocation<JwtDecoder>(issuerUri) as NimbusJwtDecoder
         val audienceValidator = audienceValidator(oAuth2ResourceServerProperties.jwt.audiences)
-        val withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri)
-        val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(withIssuer, audienceValidator)
+        val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(
+            JwtTimestampValidator(Duration.of(1, ChronoUnit.DAYS)), // 구글의 jwt expire time은 1시간이지만, 하루동안 접속이 유지되도록 하기 위해 clockSkew를 하루로 설정함.
+            JwtIssuerValidator(issuerUri),
+            audienceValidator,
+        )
         jwtDecoder.setJwtValidator(withAudience)
         return jwtDecoder
     }
