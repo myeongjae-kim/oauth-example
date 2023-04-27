@@ -9,6 +9,7 @@
    2. jwt자체의 정보만를 검증합니다.
       1. jwt가 expired 되어있는지 아닌지
       2. 토큰의 `aud` 값이 백엔드 설정의 oauth client-id와 동일한지 
+      3. (G Suite 내부용 구글 로그인인 경우) 토큰의 `hd` 값이 백엔드 설정의 oauth hd와 동일한지
 
 Session을 사용하는 경우 `SecurityContextPersistenceFilter` 앞에 커스텀 필터를 추가해서 Jwt 토큰의 정보로 멤버 객체를 생성하고
 `SecurityContextHolder.getContext().setAuthentication()` 의 매개변수에 넣으면 됩니다. (참고: https://docs.spring.io/spring-session/reference/guides/boot-jdbc.html#httpsession-jdbc-boot-how)
@@ -29,3 +30,9 @@ cd frontend-with-oauth-login
 pnpm install
 pnpm dev
 ```
+
+## 참고
+
+- https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html
+- https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/opaque-token.html
+- https://developers.google.com/identity/sign-in/web/backend-auth#verify-the-integrity-of-the-id-token
