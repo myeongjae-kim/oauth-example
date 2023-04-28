@@ -8,8 +8,8 @@ import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfiguration.ALL
 
@@ -39,7 +39,7 @@ class SecurityConfig() {
             .oauth2ResourceServer { oauth2 ->
                 oauth2.jwt(withDefaults())
             }
-            .addFilterAfter(JwtToMemberFilter(), BasicAuthenticationFilter::class.java)
+            .addFilterAfter(JwtToMemberFilter(), BearerTokenAuthenticationFilter::class.java)
 
         return http.build()
     }

@@ -4,9 +4,9 @@ import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 
 class JwtToMemberFilter : Filter {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
@@ -20,7 +20,7 @@ class JwtToMemberFilter : Filter {
             )
 
             SecurityContextHolder.getContext().authentication =
-                UsernamePasswordAuthenticationToken(
+                PreAuthenticatedAuthenticationToken(
                     myMember,
                     authentication.credentials,
                     myMember.authorities,
