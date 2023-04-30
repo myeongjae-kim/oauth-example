@@ -27,6 +27,7 @@ class SecurityConfig() {
                         allowedOrigins = listOf("http://localhost:3000")
                         allowedMethods = listOf(ALL)
                         allowedHeaders = listOf(ALL)
+                        allowCredentials = true
                     }
                 }
             }
